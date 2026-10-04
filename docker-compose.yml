@@ -1,0 +1,50 @@
+# AskKB 开发环境一键启动
+# 启动: docker-compose up -d
+# 仅包含后端+可选Redis；前端用 npm run dev 启动
+
+version: '3.8'
+
+services:
+  # ─── 后端 API 服务 ───
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: askkb-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DASHSCOPE_API_KEY=${DASHSCOPE_API_KEY:-${DASH_SCOPE_API_KEY}}
+      - ENVIRONMENT=${ENVIRONMENT:-dev}
+      - DEBUG=${DEBUG:-true}
+      - DATABASE_URL=sqlite+aiosqlite:///./data/askkb.db
+      - REDIS_URL=redis://redis:6379/0
+      - CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+    volumes:
+      - ./backend/data:/app/data
+      - ./backend/app:/app/app
+    depends_on:
+      redis:
+        condition: service_started
+    restart: unless-stopped
+    networks:
+      - askkb-net
+
+  # ─── Redis (可选，用于会话记忆/限流，不可用时后端自动降级为内存) ───
+  redis:
+    image: redis:7-alpine
+    container_name: askkb-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - askkb-net
+
+volumes:
+  redis_data:
+
+networks:
+  askkb-net:
+    driver: bridge
