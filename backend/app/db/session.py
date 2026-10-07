@@ -4,11 +4,16 @@ from app.config import get_settings
 
 settings = get_settings()
 
+# SQLite 不支持 QueuePool 的 pool_size/max_overflow 参数，按数据库类型区分配置
+if settings.DATABASE_URL.startswith("sqlite"):
+    engine_kwargs = {}
+else:
+    engine_kwargs = {"pool_size": 20, "max_overflow": 10, "pool_recycle": 3600}
+
 engine = create_async_engine(
     settings.DATABASE_URL,
     echo=settings.DEBUG,
-    pool_size=20,
-    max_overflow=10,
+    **engine_kwargs,
 )
 
 AsyncSessionLocal = async_sessionmaker(

@@ -17,7 +17,7 @@ redis==5.2.1
 
 # Authentication
 python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
+bcrypt>=4.1.0
 python-dotenv==1.0.1
 
 # Pydantic & Validation
@@ -25,10 +25,10 @@ pydantic==2.10.3
 pydantic-settings==2.6.1
 
 # LangChain Core
-langchain==0.3.13
-langchain-core==0.3.28
-langchain-community==0.3.13
-langchain-text-splitters==0.3.5
+langchain>=0.3.13,<0.4.0
+langchain-core>=0.3.29,<0.4.0
+langchain-text-splitters>=0.3.5,<0.4.0
+langchain-community>=0.3.13, <0.4.0
 
 # Vector Store - Chroma (dev)
 chromadb==0.5.18

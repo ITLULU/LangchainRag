@@ -3,24 +3,29 @@ import uuid
 from datetime import datetime, timedelta, timezone
 from typing import Optional, Tuple
 
+import bcrypt
 from jose import jwt, JWTError
-from passlib.context import CryptContext
 from app.config import get_settings
 
 settings = get_settings()
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 ALGORITHM = settings.JWT_ALGORITHM
 SECRET_KEY = settings.SECRET_KEY
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+    # bcrypt 密码上限 72 字节，与 hash_password 保持一致的截断策略
+    pwd = plain_password.encode("utf-8")[:72]
+    try:
+        return bcrypt.checkpw(pwd, hashed_password.encode("utf-8"))
+    except ValueError:
+        return False
 
 
 def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+    # bcrypt 只接受最长 72 字节的密码
+    pwd = password.encode("utf-8")[:72]
+    return bcrypt.hashpw(pwd, bcrypt.gensalt(rounds=12)).decode("utf-8")
 
 
 def create_access_token(
