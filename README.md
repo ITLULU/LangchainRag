@@ -229,9 +229,11 @@ npm run dev                            # Vite 已将 /api、/v1 代理到 http:/
 | 变量 | 默认值 | 说明 |
 |---|---|---|
 | `DASHSCOPE_API_KEY` | —（必填） | 百炼 API Key，核心依赖 |
+| `DASHSCOPE_API_URL` | `https://dashscope.aliyuncs.com/compatible-mode/v1` | **大模型请求 base url**（OpenAI 兼容端点）；LLM 走 `{...}/chat/completions`、Embedding 走 `{...}/embeddings`；末尾 `/v1` 自动补齐；百炼专属部署(maas)可覆盖 |
 | `LLM_MODEL` | `qwen-plus` | 生成模型 |
 | `EMBEDDING_MODEL` | `text-embedding-v4` | 向量化模型 |
 | `RERANK_MODEL` | `gte-rerank` | 精排模型 |
+| `RERANK_URL` | `https://dashscope.aliyuncs.com/api/v1/services/rerank/text-rerank/text-rerank` | 精排地址（走 DashScope 原生公共端点，与上面 OpenAI 兼容端点独立，可单独覆盖） |
 | `DATABASE_URL` | `sqlite+aiosqlite:///./data/askkb.db` | 元数据库（生产换 MySQL） |
 | `VECTOR_STORE_TYPE` | `chroma` | 向量库类型（`chroma` / `qdrant`） |
 | `QDRANT_URL` | `http://localhost:6333` | Qdrant 地址（prod） |
