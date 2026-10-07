@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import Optional, List
+from datetime import datetime
 
 
 class AskRequest(BaseModel):
@@ -62,7 +63,7 @@ class MessageOut(BaseModel):
     confidence: Optional[float]
     refused: bool
     handoff: bool
-    created_at: str
+    created_at: datetime
 
     class Config:
         from_attributes = True

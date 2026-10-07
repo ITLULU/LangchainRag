@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import Optional
+from datetime import datetime
 from app.models.user import UserRole, UserSecurityLevel
 
 
@@ -28,7 +29,7 @@ class UserOut(BaseModel):
     security_level: UserSecurityLevel
     is_active: bool
     channel_scope: str
-    created_at: str
+    created_at: datetime
 
     class Config:
         from_attributes = True

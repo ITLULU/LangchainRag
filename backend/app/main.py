@@ -9,6 +9,15 @@ from contextlib import asynccontextmanager
 if sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
+# Windows 中文环境控制台/管道默认使用 GBK 编码，启动日志中的 emoji（如 🚀）与中文
+# 会触发 UnicodeEncodeError，导致 lifespan 启动失败、worker 进程退出，进而使前端
+# 代理对浏览器返回 500。这里将标准输出/错误统一重设为 UTF-8（Python 3.7+）。
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8")
+    except (AttributeError, ValueError):
+        pass
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
