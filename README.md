@@ -156,13 +156,17 @@ npm run dev
 #   前端页面:     http://localhost:5173
 ```
 
-### 方式二：本地开发（Windows 一键脚本）
+### 方式二：本地开发（Windows 一键脚本 · Anaconda）
 
-仓库根目录提供 [`start-dev.bat`](start-dev.bat)：自动校验 API Key → 安装前后端依赖 → 分别拉起后端（:8000）与前端（:5173）。
+仓库根目录提供 [`start-dev.bat`](start-dev.bat)：自动校验 API Key → **定位 conda 环境 `langchain-rag` 的 python 解释器**（支持脚本顶部 `CONDA_PYTHON` 手动指定）→ 用该环境 `python -m pip` 装后端依赖 → 以 **`python -m app.main`** 拉起后端（:8000）与前端（:5173）。
 
 ```bash
-# 先确保已 export/set DASHSCOPE_API_KEY，然后双击或执行：
+# 1. 先确保已 export/set DASHSCOPE_API_KEY，然后双击或执行：
 start-dev.bat
+
+# 2. 若自动探测不到 conda 环境，可在脚本顶部手动指定：
+#    set "CONDA_PYTHON=C:\Users\<你>\.conda\envs\langchain-rag\python.exe"
+#    （或修改脚本顶部 CONDA_ENV 切换环境名）
 ```
 
 ### 方式三：Anaconda 环境手动启动（本项目当前使用）
