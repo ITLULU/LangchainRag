@@ -60,7 +60,7 @@ export default function LoginPage() {
           <Form.Item name="username" rules={[{ required: true, message: '请输入用户名' }]}>
             <Input prefix={<UserOutlined />} placeholder="用户名" />
           </Form.Item>
-          <Form.Item name="password" rules={[{ required: true, min: 6, message: '密码至少6位' }]}>
+          <Form.Item name="password" rules={[{ required: true, min: 4, message: '密码至少4位' }]}>
             <Input.Password prefix={<LockOutlined />} placeholder="密码" />
           </Form.Item>
           {tab === 'register' && (

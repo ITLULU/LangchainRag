@@ -1,6 +1,14 @@
 """AskKB 企业级 RAG 知识库平台——FastAPI 主入口"""
 import os
+import sys
+import asyncio
 from contextlib import asynccontextmanager
+
+# Windows + aiomysql：MySQL 异步连接需要 Selector 事件循环，
+# 否则 Proactor 事件循环会在建连时抛出 NotImplementedError（须在创建引擎/事件循环前设置）
+if sys.platform == "win32":
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 

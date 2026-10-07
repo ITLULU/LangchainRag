@@ -243,6 +243,19 @@ npm run dev                            # Vite 已将 /api、/v1 代理到 http:/
 | `RATE_LIMIT_PER_MIN` | 20 | 每用户每分钟问答限流 |
 | `CORS_ORIGINS` | `http://localhost:5173,...` | 允许的前端来源 |
 
+> **接入本地 MySQL / Redis（本项目当前环境）**
+> 元数据库默认用 SQLite 免安装；若要连本地 MySQL（示例 `127.0.0.1:13306`，`root:root`），在 `backend/.env` 设置异步连接串并先建库：
+>
+> ```bash
+> # 1) 先建库（create_all 只建表不建库）
+> #    CREATE DATABASE askkb DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci;
+> # 2) .env 指定连接串（异步驱动 aiomysql，已在 requirements.txt）
+> DATABASE_URL=mysql+aiomysql://root:root@127.0.0.1:13306/askkb?charset=utf8mb4
+> REDIS_URL=redis://127.0.0.1:6379/0
+> ```
+>
+> 注意：SQLAlchemy 异步引擎必须用 `mysql+aiomysql://`（不能用同步的 `pymysql`）；Redis 端口 6379 供会话记忆(db0)与 Celery(db1/db2) 共用，未启动时后端自动降级为内存。
+
 ---
 
 ## 📡 API 概览

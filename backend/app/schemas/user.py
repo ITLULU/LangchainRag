@@ -5,7 +5,7 @@ from app.models.user import UserRole, UserSecurityLevel
 
 class UserCreate(BaseModel):
     username: str = Field(..., min_length=3, max_length=100)
-    password: str = Field(..., min_length=6)
+    password: str = Field(..., min_length=4)
     display_name: str
     email: Optional[str] = None
     department: str = "通用部门"

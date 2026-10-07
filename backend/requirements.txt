@@ -11,6 +11,7 @@ sqlalchemy==2.0.36
 aiosqlite==0.20.0
 alembic==1.14.0
 pymysql==1.1.1
+aiomysql==0.2.0        # MySQL 异步驱动（create_async_engine 使用 mysql+aiomysql://）
 
 # Redis
 redis==5.2.1
